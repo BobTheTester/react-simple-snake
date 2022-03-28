@@ -1,5 +1,5 @@
 {
-  "name": "react-simple-snake",
+  "name": "@yewyewxd/react-simple-snake",
   "description": "A simple snake game created with the React JavaScript library",
   "version": "0.2.2",
   "main": "lib/snake.js",
