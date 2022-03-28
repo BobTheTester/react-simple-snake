@@ -7,6 +7,8 @@ class SnakeGame extends React.Component {
     super(props)
 
     this.handleKeyDown = this.handleKeyDown.bind(this)
+    this.handleTouchMove = this.handleTouchMove.bind(this)
+    this.handleTouchStart = this.handleTouchStart.bind(this)
 
     this.state = {
       width: 0,
@@ -26,12 +28,16 @@ class SnakeGame extends React.Component {
       score: 0,
       highScore: Number(localStorage.getItem('snakeHighScore')) || 0,
       newHighScore: false,
+      xDown: null,
+      yDown: null,
     }
   }
 
   componentDidMount() {
     this.initGame()
     window.addEventListener('keydown', this.handleKeyDown)
+    window.addEventListener('touchstart', this.handleTouchStart)
+    window.addEventListener('touchmove', this.handleTouchMove)
     this.gameLoop()
   }
 
@@ -333,6 +339,55 @@ class SnakeGame extends React.Component {
       default:
     }
     this.setState({ directionChanged: true })
+  }
+
+  handleTouchStart(e) {
+    const touches = e.touches || e.originalEvent.touches
+    const firstTouch = touches[0]
+    this.setState({
+      xDown: firstTouch.clientX,
+      yDown: firstTouch.clientY,
+    })
+  }
+
+  handleTouchMove(e) {
+    if (!this.state?.xDown || !this.state?.yDown) {
+      return
+    }
+
+    const xUp = e.touches[0].clientX
+    const yUp = e.touches[0].clientY
+
+    const xDiff = this.state.xDown - xUp
+    const yDiff = this.state.yDown - yUp
+
+    if (Math.abs(xDiff) > Math.abs(yDiff)) {
+      /*most significant*/
+      if (xDiff > 0) {
+        /* left swipe */
+        console.log('left')
+        this.goLeft()
+      } else {
+        /* right swipe */
+        console.log('right')
+        this.goRight()
+      }
+    } else {
+      if (yDiff > 0) {
+        /* up swipe */
+        console.log('up')
+        this.goUp()
+      } else {
+        /* down swipe */
+        console.log('down')
+        this.goDown()
+      }
+    }
+    /* reset values */
+    this.setState({
+      xDown: null,
+      yDown: null,
+    })
   }
 
   goLeft() {
