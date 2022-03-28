@@ -362,28 +362,20 @@ class SnakeGame extends React.Component {
     const yDiff = this.state.yDown - yUp
 
     if (Math.abs(xDiff) > Math.abs(yDiff)) {
-      /*most significant*/
       if (xDiff > 0) {
-        /* left swipe */
-        console.log('left')
         this.goLeft()
       } else {
-        /* right swipe */
-        console.log('right')
         this.goRight()
       }
     } else {
       if (yDiff > 0) {
-        /* up swipe */
-        console.log('up')
         this.goUp()
       } else {
-        /* down swipe */
-        console.log('down')
         this.goDown()
       }
     }
-    /* reset values */
+
+    // reset values
     this.setState({
       xDown: null,
       yDown: null,
